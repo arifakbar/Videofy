@@ -1,0 +1,333 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">-->
+    <title>Videofy</title>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'stylea.css' %}">
+    <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="tnavbar">
+        <div class="tnavbarLeft">
+          <i class="fa fa-bars" id="sidenav-toggler" aria-hidden="true"></i>
+          <a href="{% url 'home' %}"><label>
+            <img src="{% static 'Group 107.png' %}" alt="" class="logo">
+          </label></a>
+        </div>
+        <div class="tnavLinks">
+          <a href="{% url 'home' %}">HOME</a>
+          <a href="{% url 'trending' %}">TRENDING</a>
+          <div class="tnavDropdown">
+            <button>CATEGORIES</button>
+            <i class="fa fa-caret-down"></i>
+            <div class="tnavDropdown-content">
+              <a href="{% url 'gamesCat' %}"
+                ><i class="fa fa-gamepad" aria-hidden="true"></i> &nbsp; Games</a
+              >
+              <a href="{% url 'educationCat' %}"
+                ><i class="fa fa-book" aria-hidden="true"></i> &nbsp; Education</a
+              >
+              <a href="{% url 'musicCat' %}"
+                ><i class="fa fa-music" aria-hidden="true"></i> &nbsp; Music</a
+              >
+              <a href="{% url 'moviesCat' %}"
+                ><i class="fa fa-newspaper-o" aria-hidden="true"></i> &nbsp;
+                Movies</a
+              >
+              <a href="{% url 'fashionCat' %}"
+                ><i class="fa fa-scissors" aria-hidden="true"></i> &nbsp;
+                Fashion</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="tnavRight">
+          <form method="get" class="tanvSearch" action="{% url 'search' %}">
+              <input type="text" name="query" id="query" autocomplete="off">
+              <!--<button class="tnavRightFormBtn" type="submit"><i class="fa fa-search"></i></button>-->
+          </form>
+          {% if request.user.is_authenticated%}
+          <div class="tnavUserPic">
+            {% if user.userprofile.profilePic %}
+            <img class="tnavUserPicImg" src="{{ user.userprofile.profilePic.url}}" alt="NF">
+            {% else %} 
+            <img class="tnavUserPicImg" src="{% static 'user.webp' %}" alt="NF">  
+            {% endif %} 
+              <div class="tnavImgDropdown">
+                <li><a href="{% url 'userProfile' %}">Your Profile</a></li>
+                <hr />
+                <li><a href="{% url 'editProfile' %}">Edit Profile</a></li>
+                <hr />
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+              </div>
+            </div>
+        </div>
+        {% else %}
+        <a href="{% url 'login' %}"><p class="loginPopup">Login</p></a>
+        {% endif %}
+    </nav>
+      <!-- Top Navbar Ends -->
+
+    <!-- Side Navabr -->
+    <div class="snavebar">
+        <div class="snavbarTop">
+        {% if request.user.is_authenticated%}   
+          <p>Name of User</p>
+          {% else %}
+          <a href="{% url 'login' %}">Log In</a>
+          <div style="width: 80%;height:0.0625rem;background-color:var(--content);margin:.7rem;">&nbsp;</div>
+          {% endif %}
+          {% if request.user.is_authenticated%}
+          <div id="snavMode">
+            <label class="snavSwitch" class="toggler">
+              <input type="checkbox" />
+              <span id="checkbox" class="snavSlider snavRound"></span>
+            </label>
+            <h5>Night Mode</h5>
+          </div>
+          {% else %}
+          <div id="snavMode" aria-disabled="true">
+            <label class="snavSwitch" class="toggler" >
+              <input type="checkbox" disabled />
+              <span id="checkbox" class="snavRound"></span>
+            </label>
+            <h5>Night Mode</h5>
+          </div>
+          <small style="text-align: center;">Log in access night mode.</small>
+          {% endif %}
+        </div>
+        <br />
+        <hr />
+        <br />
+        <div class="snavbarMid">
+          {% if request.user.is_authenticated%}
+          <a href="{% url 'likedVideos' %}">
+            <i class="fa fa-heart" aria-hidden="true"></i> &nbsp; Liked Videos</a
+          >
+          <a href="{% url 'history' %}">
+            <i class="fa fa-history" aria-hidden="true"></i> &nbsp; History</a
+          >
+          <a href="{% url 'watchLaterVideos' %}">
+            <i class="fa fa-clock-o" aria-hidden="true"></i> &nbsp; Watch Later</a
+          >
+          <a href="{% url 'playlist' %}">
+            <i class="fa fa-list-alt" aria-hidden="true"></i> &nbsp; Playlists</a
+          >
+          <!-- <a href="">
+            <i class="fa fa-bell" aria-hidden="true"></i> &nbsp; Notifications</a
+          > -->
+          {% else %}
+
+            <p style="text-align: center;">Login To Like Videos, Create Playlist and many more.</p>
+
+          {% endif %}
+        </div>
+        <br />
+        <hr />
+        <br />
+        <div class="snavbarBottom">
+          <p>Themes</p>
+          {% if request.user.is_authenticated %}
+          <div class="snavbarBottomLinks">
+            <a class="theme1">
+              <i class="fa fa-themeisle" aria-hidden="true"></i> &nbsp; Theme 1</a
+            >
+            <a class="theme2">
+              <i class="fa fa-themeisle" aria-hidden="true"></i> &nbsp; Theme 2</a
+            >
+            <a href="{% url 'themes' %}"> + Explore More</a>
+            <a class='themeReset'>
+              <i class="fa fa-retweet" aria-hidden="true"></i>  &nbsp; Reset
+          </a>
+          </div>
+          {% else %}
+          <small style="text-align: center;">Login To experience more Themes.</small>
+          {% endif %}
+        </div>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'logout' %}"><button>Sign Out</button></a>
+        {% else %}
+        <a href="{% url 'signup' %}"><button>Sign Up</button></a>
+        {% endif %}
+      </div>
+      <!-- Side Navbar ends -->
+  
+     
+    {% block body %}
+    {% endblock body %}
+
+
+    <!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/gsap-latest-beta.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>-->
+    <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.5/waypoints.min.js"></script>
+    <script src="{% static 'jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'infinite.min.js' %}"></script>-->
+    <script src="{% static 'app.js' %}"></script>
+    <script type="text/javascript">
+
+      var loggedin = '{{request.user.is_authenticated }}';
+
+      if(loggedin === 'False'){
+        root.style.setProperty('--tnav-bg', '#fff');
+        root.style.setProperty('--content', '#424242');
+        root.style.setProperty('--snav-bg', '#fff');
+        root.style.setProperty('--body-bg', '#fff');
+        root.style.setProperty('--tnav-shadow', '#E2E1E1');
+      };
+
+        $(document).ready(function(event){
+            $(document).on('click','#like',function(event){
+                event.preventDefault();
+                var pk = $(this).attr('value');
+                $.ajax({
+                    type : 'POST',
+                    url : `{% url 'like_video' %}`,
+                    data : {'likeVid':pk,'csrfmiddlewaretoken':'{{ csrf_token }}'},
+                    dataType : 'json',
+                    success : function(response){
+                        $('#like-section').html(response['form'])
+                    },
+                    error : function(res , e){
+                        console.log(res.responseText);
+                    },
+                });
+            });
+              /*$(document).ready(function(){
+                $('.addCommentBtn2').click(function(){
+                  $('.LTC').show()
+                })
+              }); */
+              $(document).ready(function(){
+                $('#watchLater').click(function(){
+                  $('.LTWP').show()
+                  $('.LTWP2').hide()
+                })
+              });
+              $(document).ready(function(){
+                $('.addToPlaylistBtn2').click(function(){
+                  $('.LTWP2').show()
+                  $('.LTWP').hide()
+                })
+              });
+              $(document).ready(function(){
+                $('.CLTWP').click(function(){
+                  $('.LTWP').hide()
+                })
+              });
+              $(document).ready(function(){
+                $('.CLTWP2').click(function(){
+                  $('.LTWP2').hide()
+                })
+              });
+              $(document).ready(function(){
+                $('#like').click(function(){
+                  $('.LTLD').show()
+                  $('.LTLD2').hide()
+                })
+              });
+              $(document).ready(function(){
+                $('#dislike').click(function(){
+                  $('.LTLD2').show()
+                  $('.LTLD').hide()
+                })
+              });
+              $(document).ready(function(){
+                $('.CLTLD').click(function(){
+                  $('.LTLD').hide()
+                })
+              });
+              $(document).ready(function(){
+                $('.CLTLD2').click(function(){
+                  $('.LTLD2').hide()
+                })
+              });
+      
+            $(document).on('click','#dislike',function(event){
+                event.preventDefault();
+                var pk = $(this).attr('value');
+                $.ajax({
+                    type : 'POST',
+                    url : `{% url 'like_video' %}`,
+                    data : {'dislikeVid':pk,'csrfmiddlewaretoken':'{{ csrf_token }}'},
+                    dataType : 'json',
+                    success : function(response){
+                        $('#like-section').html(response['form'])
+                    },
+                    error : function(res , e){
+                        console.log(res.responseText);
+                    },
+                });
+            });
+            $(document).on('click','#watchLater',function(event){
+                event.preventDefault();
+                var pk = $(this).attr('value');
+                $.ajax({
+                    type : 'POST',
+                    url : `{% url 'watch_later' %}`,
+                    data : {'watchVidLater':pk,'csrfmiddlewaretoken':'{{ csrf_token }}'},
+                    dataType : 'json',
+                    success : function(response){
+                        $('#watchlater-section').html(response['form'])
+                    },
+                    error : function(res , e){
+                        console.log(res.responseText);
+                    },
+                });
+            });
+            $('.openReply').click(function(){
+              $(this).parent().next('.replySection').fadeToggle();
+            });
+            $(document).on('submit','.comment-form',function(event){
+              event.preventDefault();
+              $.ajax({
+                type:'POST',
+                url:$(this).attr('action'),
+                data: $(this).serialize(),
+                dataType:'json',
+                success: function(response){
+                  $('.videoComments').html(response['form']);
+                  $('.openReply').click(function(){
+                    $(this).parent().next('.replySection').fadeToggle();
+                  });
+                },
+                error: function(rs,e){
+                  console.log(rs.responseText);
+                },
+              });
+            });
+            $(document).on('submit','.reply-form',function(event){
+              event.preventDefault();
+              $.ajax({
+                type:'POST',
+                url:$(this).attr('action'),
+                data: $(this).serialize(),
+                dataType:'json',
+                success: function(response){
+                  $('.videoComments').html(response['form']);
+                  $('.openReply').click(function(){
+                    $(this).parent().next('.replySection').fadeToggle();
+                  });
+                },
+                error: function(rs,e){
+                  console.log(rs.responseText);
+                },
+              });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+{% extends 'main.html' %} {% block body %} {% load static %}
+
+<!--<p>New Playlist</p>
+<br>
+<br>
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="">Name</label>
+        <input type="text" placeholder="Playlist name Here.." name="playlistName" required>
+    </div>
+    <div class="form-group">
+        <label for="">Image</label>
+        <input type="file" name="playlistPic">
+    </div>
+    <button type="submit" name="createPlayList">Create</button>
+</form>
+<br>
+<br> -->
+
+<!--<h1>Playlist Here</h1> <br>
+<div class="container" style="display:flex; padding-left:1rem;gap:1rem" >
+    {% for i in playlist %}
+        <div class="playlist" style="background-color: red;">
+            <p><a href="{% url 'playlistVid' i.id %}">{{ i.name }}</a></p> <br>
+            {% if i.playlistPic %}
+                <img src="{{ i.playlistPic.url }}" alt="" style="height:15rem;width:15rem;object-fit:cover"> <br>
+            {% else %}
+            <img src="https://images.unsplash.com/photo-1601371003376-025a0b87c5b7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt="" style="height:15rem;width:15rem;object-fit:cover"> <br>
+            {% endif %}    
+            <form method="post">
+                {% csrf_token %}
+                <button name="deletePLaylist" type="submit" value="{{ i.id }}"> Delete </button>
+            </form>
+        </div>
+    {% endfor %}
+</div> -->
+
+<!-- Playlist -->
+
+<div class="playlistContainer">
+  <h1 class="heading">
+    Playlist
+    <div class="underline"></div>
+  </h1>
+  <a href="{% url 'createPlaylist' %}">
+    <p style="position: absolute; right: 9.5rem; top: 3.5rem">
+      Create New Playlist
+    </p></a
+  >
+  <div class="displayPlaylists">
+    <div class="displayPlaylistsLeft" style="padding-top: 8rem">
+      <img
+        src="https://images.unsplash.com/photo-1601306483417-134e652e544f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+        alt=""
+      />
+    </div>
+    <div class="displayPlaylistsRight">
+      {% for i in playlist %}
+      <div class="showPlaylist">
+        <div class="playlistPoster">
+          {% if i.playlistPic %}
+          <img src="{{ i.playlistPic.url }}" alt="" /> <br />
+          {% else %}
+          <img
+            src="https://images.unsplash.com/photo-1601371003376-025a0b87c5b7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+            alt=""
+          />
+          {% endif %}
+        </div>
+        <div class="playlistAbout">
+          <div class="playlistInfo">
+            <a href="{% url 'playlistVid' i.id %}"><h1>{{ i.name }}</h1></a>
+            <h3 style="font-weight: 400">
+              Total Videos : {{ i.total_videos }}
+            </h3>
+            <p style="margin-top: .5rem;">{{ i.description }}</p>
+          </div>
+          <form method="POST" class="playlistAction">
+            {% csrf_token %}
+            <button name="deletePLaylist" type="submit" value="{{ i.id }}">
+              Delete
+            </button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- Playlist Ends-->
+
+{% endblock body %}

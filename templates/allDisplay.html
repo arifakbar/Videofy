@@ -1,0 +1,127 @@
+{% extends 'main.html' %} {% block body %} {% load static %}
+
+<!-- Index Page -->
+
+<div class="indexContainer" style="flex: 0 0 auto; margin-top: 0.2rem">
+  <div class="indexTrendings" style="z-index: 0">
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        {% for i in trending5 %}
+        <div class="swiper-slide">
+          <div class="trendingLogo">
+            <img src="{% static 'Group 71.png' %}" alt="NF" />
+          </div>
+          <div class="trendingImg">
+            <img
+              src="{{ i.videoPic.url }}"
+              alt="NF"
+            />
+          </div>
+          <div class="trendingInfo">
+            <a href="{% url 'videoDisplay' i.id %}"><h1>{{ i.videoName }}</h1></a>
+            <a href="{% url 'displayVideoUser' i.user.id %}"><p>{{ i.user.username }}</p></a>
+            <div class="trendingInfoPlay">
+              <a href="{% url 'videoDisplay' i.id %}"><button>Play Video</button></a>
+            </div>
+            {% if request.user.is_authenticated %}
+            <form method="POST" class="trendingInfoBtns">
+              {% csrf_token %}
+              <button name="AddWatchLater"
+              type="submit"
+              value="{{ i.id }}">Watch Later</button> 
+              <a class="addToPlaylistBtn trendingInfoBtnsA"
+                    >Add to Playlist</a
+                  >
+              <!-- Save To Playlist Popup -->
+                <div class="playlistbgOverlay" style="position: absolute"></div>
+                <div class="allPlaylists" style="position: absolute">
+                  <i class="fa fa-close closePlaylist"></i>
+                  <h3>Add To</h3>
+                  <hr />
+                  <div class="playlistNo">
+                    {% for j in playlist %}
+                    <a href="{% url 'addVidToPlaylist' j.id i.id %}">{{ j.name }}</a>
+                    <hr />
+                    {% endfor %}
+                  </div>
+                  <a href="{% url 'createPlaylist' %}">+ Create New Playlist</a>
+                </div>
+              
+                <!-- Save To Playlist Popup Ends -->
+            </form>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+  <div class="indexVideos infinite-container">
+    {% for i in allVideos %}
+
+    <div class="indexVideo infinite-item">
+      <div class="indexVideoTop">
+        <a href="{% url 'videoDisplay' i.id %}"
+          ><img src="{{ i.videoPic.url }}" alt="NF"
+        /></a>
+      </div>
+      <div class="indexVideoBottom">
+        <div class="indecVideoBottomLeft">
+          <a href="{% url 'videoDisplay' i.id %}"><h1>{{ i.videoName }}</h1></a>
+          <a href="{% url 'displayVideoUser' i.user.id %}"
+            ><p>{{ i.user.username }}</p></a
+          >
+        </div>
+        <div class="indexVideoBottomRight">
+          <i class="fa fa-ellipsis-h">
+            <form method="POST" class="indexVideoActions">
+              {% csrf_token %}
+              <button
+                name="AddWatchLater"
+                type="submit"
+                value="{{ i.id }}"
+              >
+                Add To Watch Later
+              </button>
+              <hr />
+              <p class="addToPlaylistBtn">Add to Playlist</p>
+                  <!-- Save To Playlist Popup -->
+    <div class="playlistbgOverlay" style="position: fixed;"></div>
+    <div class="allPlaylists" style="position: fixed;">
+      <i class="fa fa-close closePlaylist"></i>
+      <h3>Add To</h3>
+      <hr />
+      <div class="playlistNo">
+        {% for j in playlist %}
+        <a href="{% url 'addVidToPlaylist' j.id i.id %}">{{ j.name }}</a>
+        <hr />
+        {% endfor %}
+      </div>
+      <a href="{% url 'createPlaylist' %}">+ Create New Playlist</a>
+    </div>
+
+    <!-- Save To Playlist Popup Ends -->
+              
+            </form>
+            
+          </i>
+          
+        </div>
+        
+      </div>
+    </div>
+              
+    {% endfor %}
+  </div>
+  
+ <!--  <div class="indexViewMore">
+    <hr />
+    <a href="">+ View More</a>
+    <hr />
+</div>
+
+Index Page Ends-->
+
+{% endblock body %}

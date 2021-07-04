@@ -1,0 +1,53 @@
+{% extends 'main.html' %}
+{% block body %}
+{% load static %}
+
+    <!-- About Body -->
+
+    <div class="accountConatiner">
+        <h1>{{ vidUser.username | capfirst }} Account <div class="underline"></div> </h1>
+        <div class="accountContent">
+            <div class="accountContentLeft">
+                <div class="userProfile">
+                    <div class="userProfilePic">
+                        <img src="{{ vidUser.userprofile.profilePic.url }}" alt="NF">
+                    </div>
+                    <div class="userProfileInfo">
+                        <h3>{{ vidUser.username | capfirst }}</h3>
+                        <p>Account Created : {{ vidUser.date_joined | date}}</p>
+                    </div>
+                </div>
+                <div class="userAbout">
+                    <h3>About</h3>
+                    <p>{{ vidUser.userprofile.about }}</p>
+                    <h5>Total Subscribers</h5>
+                    <p>{{ vidUser.userprofile.subscribers }}</p>
+                </div>
+            </div>
+            <div class="accountContentRight">
+                <div class="userUploadedVideos">
+                    <h3>Uploaded Videos</h3>
+                </div>
+                <hr>
+                <div class="userUploadedVideoCards">
+                    {% for i in video %}
+                        <div class="uploadedVideoCard">
+                            <div class="uploadedVideoCardTop" style="overflow: hidden;">
+                                <a href="{% url 'videoDisplay' i.id %}"><img src="{{ i.videoPic.url }}" alt="" style="height: 100%;width:100%;object-fit:cover"></a>
+                            </div>
+                            <div class="userVideoName">
+                                <a href="{% url 'videoDisplay' i.id %}"><h1 style="color:var(--contant);">{{ i.videoName }}</h1></a>
+                            </div>
+                            <hr>
+                            <p style="font-size: 0.8rem; padding-left:0.625rem;padding-right:0.625rem;">
+                                {{ i.description | truncatechars:39  }}
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About Ends -->
+
+{% endblock body %}

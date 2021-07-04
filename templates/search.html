@@ -1,0 +1,83 @@
+
+{% extends 'main.html' %}
+{% block body %}
+{% load static %}
+
+
+    <!-- Search Bar Start here -->
+
+ <div class="searchbar">
+    <h1 class="heading">Search Result's <div class="underline"></div> </h1>
+
+    <form method="get" action="{% url 'search2' %}" class="searchBarNew" >
+        <input type="text" placeholder="Search videos here..." name="queries" id="queries">
+        <a><i class="fa fa-search"></i></a>
+    </form>
+
+    {% if videos|length < 1 %}
+    <div class="mainsearch">
+        <p
+        style="color: var(--content);
+                padding:1rem 1rem;"
+
+        >No search result found</p>
+    </div>  
+    {% else %}
+
+    <div class="mainsearch">
+        {% for i in videos %}
+            <div class="channelname">
+                <div class="chnl_left">
+                    <div class="chnlimg">
+                        <a href="{% url 'videoDisplay' i.id %}"><img src="{{ i.videoPic.url }}" alt=""></a>
+                    </div>
+                    <div class="chnlcontent">
+                       <a href="{% url 'videoDisplay' i.id %}"> <h2 class="chnlheading">{{ i.videoName }}</h2></a>
+                        <a href="{% url 'displayVideoUser' i.user.id %}"><h5 class="chnlchnlName">{{ i.user.username }}</h5></a>
+                        <p class="chnltitle" style="width: 100%;">{{ i.description }}</p>
+                        <p class="suscriber">Subscribers : {{ i.user.userprofile.subscribers }}</p>
+                    </div>
+                  </div>
+                <div class="chnl_right">
+                  <!--<a href=""><button class="suscontent">Suscribe</button></a>-->
+                  <i class="fa fa-ellipsis-h" aria-hidden="true">
+                    <form method="POST" class="historyActions">
+                        {% csrf_token %}
+                        <a class="addToPlaylistBtn">Add To Playlist</a>
+                                          <!-- Save To Playlist Popup -->
+    <div class="playlistbgOverlay" style="position: fixed;"></div>
+    <div class="allPlaylists" style="position: fixed;">
+      <i class="fa fa-close closePlaylist"></i>
+      <h3>Add To</h3>
+      <hr />
+      <div class="playlistNo">
+        {% for j in playlist %}
+        <a href="{% url 'addVidToPlaylist' j.id i.id %}">{{ j.name }}</a>
+        <hr />
+        {% endfor %}
+      </div>
+      <a href="{% url 'createPlaylist' %}">+ Create New Playlist</a>
+    </div>
+
+    <!-- Save To Playlist Popup Ends -->
+                        <hr style="margin-top: .125rem;">
+                        <button name="AddWatchLater" type="submit" value="{{ i.id }}"
+                                style="border: none;background-color:var(--snav-bg);cursor:pointer;
+                                 height:1rem;text-align:start;color:var(--content);
+                                 font-size:.05rem !important;padding:0;outline:none;
+                                "><a>Add To Watch Later</a></button>
+                    </form>
+                </i>
+                </div>
+            </div>
+        {% endfor %}    
+    </div>
+    {% endif %}
+</div>
+
+{% endblock body %}
+
+
+
+
+ 

@@ -1,0 +1,51 @@
+
+
+{% extends 'main.html' %}
+{% block body %}
+{% load static %}
+
+    <!-- Upload Video -->
+
+    <div class="uploadVideoContainer">
+      <h1>
+        Edit Video
+        <p class="underline"></p>
+      </h1>
+      <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+          <label>Video Name</label>
+          <input type="text" placeholder="Enter new username..." name="vidName" value="{{ video.videoName }}"  />
+        </div>
+        <div class="form-group">
+          <label>Video Poster</label>
+          <input type="file"  name="vidPoster"/>
+        </div>
+        <div class="form-group">
+            <label>Video Categories</label>
+            <select name="vidCat" id="" multiple style="height: 5rem; padding-left:.5rem">
+                <option disabled>Hold Control to Select Multiple Fields</option>
+                {% for i in cat %}
+                <option value="{{ i.1 }}"> {{ i.1 }} </option>
+                {% endfor %}
+            </select>
+          </div>
+        <div class="form-group">
+          <label>Video Description</label>
+          <textarea
+            name="vidDes"
+            id=""
+            cols="30"
+            rows="10"
+            placeholder="Write about video here..."
+            
+            style="height: 5rem;"
+          >{{ video.description }}</textarea>
+        </div>
+        <button class="saveProfileBtn" type="submit">
+          <i class="fa fa-save"></i> &nbsp; Save Video
+        </button>
+      </form>
+    </div>
+
+    {% endblock body %}

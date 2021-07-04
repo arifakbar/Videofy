@@ -1,0 +1,18 @@
+<form method="POST" class="videoLD" action="{% url 'like_video' %}">
+    {% csrf_token %}
+      {% if liked %}
+      <button type="submit" id="like" value="{{ video.id }}" name="likeVid" style="border: none;background-color:var(--body-bg);outline:none;color:red"><p>{{ total_likes }} &nbsp; <i class="fa fa-thumbs-up"></i></p></button>
+      {% else %}
+        <button type="submit" id="like" value="{{ video.id }}" name="likeVid" style="border: none;background-color:var(--body-bg);outline:none;color:var(--content)"><p>{{ total_likes }} &nbsp; <i class="fa fa-thumbs-up"></i></p></button>
+      {% endif %}
+      {% if disliked %}
+        <button type="submit" id="dislike" value="{{ video.id }}" name="dislikeVid" style="border: none;background-color:var(--body-bg);outline:none;color:red"><p>{{ total_dislikes }} &nbsp; <i class="fa fa-thumbs-down"></i></p></button>
+      {% else %}
+        <button type="submit" id="dislike" value="{{ video.id }}" name="dislikeVid" style="border: none;background-color:var(--body-bg);outline:none;color:var(--content)"><p>{{ total_dislikes }} &nbsp; <i class="fa fa-thumbs-down"></i></p></button>
+      {% endif %}
+    </form>
+    {% if not request.user.is_authenticated %}
+    <small style="width:15rem;font-size:.7rem;margin-top:0rem;display:none" class="LTLD">Login to like video &nbsp; <a class="CLTLD"><i class="fa fa-times "></i></a> </small>
+    <small style="width:15rem;font-size:.7rem;margin-top:0rem;display:none" class="LTLD2">Login to dislike video &nbsp; <a class="CLTLD2"><i class="fa fa-times"></i></a> </small>
+
+    {% endif %}

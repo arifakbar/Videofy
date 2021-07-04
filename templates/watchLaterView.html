@@ -1,0 +1,57 @@
+
+
+{% extends 'main.html' %}
+{% block body %}
+{% load static %}
+
+
+    <!-- Liked Page -->
+
+    <div class="historyContainer">
+        <h1>Watch Later <div class="underline"></div></h1>     
+        <div class="historyContent">
+            <div class="historyContentLayers">
+                {% for i in watchLaterVid %}
+                <div class="historyVideo">
+                    <div class="historyVideoTop">
+                        <div class="historyVideoTopHover">
+                            <div class="historyVideoPlay">
+                                <a href="{% url 'videoDisplay' i.id %}"><i class="fa fa-play"></i></a>
+                            </div>
+                        </div>
+                        <img src="{{ i.videoPic.url }}" alt="NF">
+                    </div>
+                    <div class="historyVideoBottom">
+                        <a href=""><h3>{{ i.videoName }}</h3></a>
+                        <i class="fa fa-ellipsis-h" aria-hidden="true">
+                            <form method="POST" class="historyActions" style="height: 4rem">
+                                {% csrf_token %}
+                               <button name="RemoveWatchLater" type="submit" value="{{ i.id }}"
+                               style="border: none;background-color:var(--snav-bg);cursor:pointer;
+                                height:1rem;text-align:start;color:var(--content);
+                                font-size:.05rem !important;padding:0;
+                               "><a>Remove From Watch Later</a></button>
+                                <hr>
+                                <button name="AddLike" type="submit" value="{{ i.id }}"
+                                style="border: none;background-color:var(--snav-bg);cursor:pointer;
+                                 height:1rem;text-align:start;color:var(--content);
+                                 font-size:.05rem !important;padding:0;
+                                "><a>Add To Liked Video</a></button>
+                            </form>
+                        </i>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:4 %}
+            </div>
+            <div class="historyContentLayers">
+                {% endif %}
+            {% endfor %}
+        </div>
+        </div>
+    </div>
+
+    <!-- Liked PAge Ends -->
+
+
+
+{% endblock body %}

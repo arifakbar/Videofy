@@ -1,0 +1,15 @@
+<form method="POST" action="{% url 'watch_later' %}">
+    {% csrf_token %}
+      
+      {% if watchLater %}
+        <button type="submit" id="watchLater" value="{{ video.id }}" name="watchVidLater" style="border: none;background-color:var(--body-bg);outline:none;color:red"><p>Remove from Watch Later &nbsp; <i class="fa fa-clock-o"></i></p></button>
+      {% else %}
+        <button type="submit" id="watchLater" value="{{ video.id }}" name="watchVidLater" style="border: none;background-color:var(--body-bg);outline:none;color:var(--content)"><p>Watch Later &nbsp; <i class="fa fa-clock-o"></i></p></button>
+      {% endif %}
+  </form>
+  <br>
+  {% if not request.user.is_authenticated %}
+  <small style="display:none" class="LTWP">Login To add to watch later &nbsp; <a class="CLTWP"><i class="fa fa-times"></i></a> </small>
+  <small style="display:none" class="LTWP2">Login To add to playlist &nbsp; <a class="CLTWP2"><i class="fa fa-times"></i></a> </small>
+  {% endif %}
+  

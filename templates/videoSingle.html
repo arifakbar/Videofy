@@ -1,0 +1,119 @@
+<style>
+  .videoDisplay {
+    background-color: red;
+  }
+
+  .videoDisplay video {
+    height: 100% !important;
+    width: 100% !important;
+  }
+</style>
+
+{% extends 'main.html' %}
+{% block body %}
+{% load static %}
+
+<!-- Video Single -->
+
+<div class="videoSingleContainer">
+
+  <!-- Save To Playlist Popup -->
+  <div class="playlistbgOverlay"></div>
+  <div class="allPlaylists">
+    <i class="fa fa-close closePlaylist"></i>
+    <h3>Add To.</h3>
+    <hr />
+    <div class="playlistNo">
+      {% for j in playlist %}
+      <a href="{% url 'addVidToPlaylist' j.id video.id %}">{{ j.name }}</a>
+      <hr />
+      {% endfor %}
+    </div>
+    <a href="{% url 'createPlaylist' %}">+ Create New Playlist</a>
+  </div>
+
+  <!-- Save To Playlist Popup Ends -->
+  <div class="videoSingleTop">
+    <div class="videoDisplay">
+      <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" controlsList="nodownload" 
+        poster="{{ video.videoPic.url }}">
+        <source src="{{ video.video.url}}" type="video/mp4" />
+        <p class="vjs-no-js">
+          To view this video please enable JavaScript, and consider
+          upgrading to a web browser that
+          <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+        </p>
+      </video>
+    </div>
+    <div class="videosActions">
+      <div id="like-section" style="height:2rem;display:flex;align-items:center">
+        {% include 'like_section.html' %}
+      </div>
+      <div class="videoComments">
+      {% include 'comment_section.html' %}
+    </div>
+    
+    </div>
+  </div>
+  <div class="videoSingleMid">
+    <div class="VideoSingleMidContent">
+      <div class="videoNameAndAction">
+        <div class="videoInfo">
+          <h3>{{ video.videoName }}</h3>
+          <a href="{% url 'displayVideoUser' video.user.id %}">
+            <p>{{ video.user.username}}</p>
+          </a>
+        </div>
+        
+        <!-- Re-design this section-->
+        <div class="videoSaveActions">
+          <p class="addToPlaylistBtn">Add To Playlist &nbsp; <i class="fa fa-plus-circle"></i></p>
+          <div id="watchlater-section">
+            {% include 'watchlater_section.html' %}
+          </div>
+        </div>
+
+      </div>
+      <div class="videoDescrription">
+        <p>{{ video.description }}</p>
+        <br>
+        <p>{{ video.category }}</p>
+      </div>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <br>
+  <div class="videoSingleBottom">
+    <h1>Related Videos <p class="underline"></p>
+    </h1>
+    <div class="RealtedVideoContainer">
+      {% for i in relatedVideo %}
+        <div class="realtedVideoHere">
+          <div class="realtedVideoHereTop">
+        <a href="{% url 'videoDisplay' i.id %}"
+          ><img src="{{ i.videoPic.url }}" alt="NF"
+        /></a>
+          </div>
+          <div class="realtedVideoHereBottom">
+            <a href="{% url 'videoDisplay' i.id %}">
+              <h3>{{ i.videoName }}</h3>
+            </a>
+            <a href="{% url 'displayVideoUser' i.user.id %}">
+              <p>{{ i.user.username }}</p>
+            </a>
+          </div>
+        </div>
+      {% endfor %}  
+      <!--<div class="ViewMoreVideoLine">
+        <hr>
+        <a href=""><span>View More + </span></a>
+        <hr>
+      </div> -->
+    </div>
+  </div>
+</div>
+</div>
+
+
+{% endblock body %}

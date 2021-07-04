@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'stylea.css' %}">
+</head>
+<body>
+    <div class="lsContainer">
+        <div class="loginContainer">
+            <div class="loginTop">
+                <h1>Login</h1>
+                <a href="{% url 'home' %}"><i class="fa fa-times closeLogin"></i></a>
+            </div>
+            <div class="loginMid">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="login-form-group">
+                        <label>Username</label>
+                        <input type="text" placeholder="Enter your username here..." name="username" required>
+                    </div>
+                    <div class="login-form-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="Enter your password here..." name="password" required>
+                    </div>
+                    <button class="loginBtn" type="submit"> <i class="fa fa-sign-in"></i> &nbsp; Login</button>
+                    {% if errorLogin %}
+                        <p>Incorrect Username or Password</p>
+                    {% endif %}
+                </form>
+            </div>
+            <div class="loginBottom">
+                <br>
+                <p>Don't have an account? <a class="signupPopup" href="{% url 'signup' %}">Signup</a> here</p>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'app.js' %}"></script>
+</body>
+</html>

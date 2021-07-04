@@ -1,0 +1,78 @@
+<p>Comments &nbsp; <i class="fa fa-comments"></i></p>
+<div class="videoCommentsContainer">
+  <div class="doneComments">
+    {% for k in comment %}
+    <div class="commentAndReply">
+      <p>{{ k.user.username|capfirst }} : &nbsp; {{ k.content|capfirst }}</p>
+      <a>
+        <p class="commentReplyBtn" style="position: relative">
+          <button class="openReply" style="position: absolute; right: 0">
+            Reply
+          </button>
+        </p>
+        <div class="replySection">
+          {% for reply in k.replies.all %}
+          <p>{{ reply.user.username|capfirst }} : &nbsp; {{ reply.content|capfirst }}</p>
+          {% endfor %}
+          <form action="" method="post" class="reply-form">
+            {% csrf_token %}
+            <input type="hidden" name="comment_id" value="{{ k.id }}" />
+            <input
+              type="text"
+              placeholder="Reply Here..."
+              name="content"
+              class="virtualInput"
+              required
+            />
+            {% if request.user.is_authenticated %}
+            <button type="submit" class="addCommentBtn" name="addCommentBtn"
+            style="border: 0.0625rem solid var(--content);
+            height:3rem;
+            width:4rem;
+            margin-top:.5rem;
+            background-color:inherit;
+            color:var(--content);
+            font-size:.6rem;
+            cursor:pointer;
+            "
+            >
+              Send
+            </button>
+            {% else %}
+            <button
+              type="submit"
+              class="addCommentBtn"
+              name="addCommentBtn"
+              disabled
+            >
+              Send
+            </button>
+            {% endif %}
+          </form>
+        </div>
+      </a>
+    </div>
+    {% endfor %} {% if not request.user.is_authenticated %}
+    <p style="text-align: center; margin-top: 0.5rem">Login to add comments</p>
+    {% endif %}
+  </div>
+  <div class="addComment">
+    <form action="" class="comment-form" method="POST">
+      {% csrf_token %}
+      <input
+        type="text"
+        placeholder="Add Your Comment Here..."
+        name="content"
+        required
+      />
+      {% if request.user.is_authenticated %}
+      <button class="addCommentBtn" name="addCommentBtn" type="submit">
+        Add
+      </button>
+      {% else %}
+      <button class="addCommentBtn" name="addCommentBtn" type="submit" disabled>Add</button>
+      <!--<p style="display: none;" class="LTC">Login To Add Comment</p>-->
+      {% endif %}
+    </form>
+  </div>
+</div>

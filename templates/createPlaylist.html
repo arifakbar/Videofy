@@ -1,0 +1,42 @@
+{% extends 'main.html' %}
+{% block body %}
+{% load static %}
+
+
+    <!-- Create playlist  -->
+
+    <div class="uploadVideoContainer">
+      <h1>
+        Create Playlist
+        <p class="underline"></p>
+      </h1>
+      <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+          <label>PLaylist Name</label>
+          <input type="text" placeholder="Enter playlist name..."  name="playlistName" required />
+        </div>
+        <div class="form-group">
+          <label>Playlist Poster</label>
+          <input type="file" name="playlistPic" />
+        </div>
+        <div class="form-group">
+          <label>Playlist Description</label>
+          <textarea
+            name="playlistDesc"
+            id=""
+            cols="30"
+            rows="10"
+            placeholder="Write about playlist here..."
+            required
+          ></textarea>
+        </div>
+        <button class="saveProfileBtn" type="submit" name="createPlayList">
+          <i class="fa fa-save"></i> &nbsp; Create PLaylist
+        </button>
+      </form>
+    </div>
+
+    <!-- Create Playlist Ends-->
+
+    {% endblock body %}

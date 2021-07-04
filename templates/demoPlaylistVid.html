@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+{% block body %}
+{% load static %}
+
+<div class="playlistContainer">
+    <h1 class="heading">Playlist Videos <div class="underline"></div> </h1>
+    <div class="displayPlaylists">
+        <div class="displayPlaylistsLeft">
+            <img src="https://images.unsplash.com/photo-1601306483417-134e652e544f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt="">
+        </div>
+        <div class="displayPlaylistsRight">
+            {% for i in playlistVid %}
+            <div class="showPlaylist">
+                <div class="playlistPoster">
+                    <img src="{{ i.videoPic.url }}" alt="" data-value={{ i.id }}>
+                </div>
+                <div class="playlistAbout">
+                    <div class="playlistInfo">
+                        <a href="{% url 'videoDisplay' i.id %}"><h1>{{ i.videoName }}</h1></a>
+                        <a href="{% url 'displayVideoUser' i.user.id %}"><h3 style="font-weight: 400; margin-bottom:.5rem">{{ i.user.username }}</h3></a>
+                        <p>{{ i.description }}</p>
+                    </div>
+                    <form method="POST" class="playlistAction">
+                        {% csrf_token %}
+                        <button name="removeVid" type="submit" value="{{ i.id }}">Remove</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<!-- Playlist Ends-->
+
+
+{% endblock body %}
